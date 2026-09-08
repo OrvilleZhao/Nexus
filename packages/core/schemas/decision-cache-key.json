@@ -1,0 +1,29 @@
+{
+  "type": "object",
+  "properties": {
+    "policy_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "action_tool": {
+      "type": "string",
+      "minLength": 1
+    },
+    "resource_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "policy_version",
+    "subject_hash",
+    "action_tool",
+    "resource_hash"
+  ],
+  "additionalProperties": false,
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

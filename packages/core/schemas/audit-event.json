@@ -1,0 +1,40 @@
+{
+  "type": "object",
+  "properties": {
+    "agent": {
+      "type": "string",
+      "minLength": 1
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tool_call": {
+      "type": "string",
+      "minLength": 1
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "allow",
+        "deny",
+        "pause",
+        "fail_closed",
+        "degraded"
+      ]
+    },
+    "token": {
+      "type": "string",
+      "pattern": "^aud-"
+    }
+  },
+  "required": [
+    "agent",
+    "session_id",
+    "tool_call",
+    "decision",
+    "token"
+  ],
+  "additionalProperties": false,
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

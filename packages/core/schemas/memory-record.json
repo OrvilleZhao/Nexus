@@ -1,0 +1,71 @@
+{
+  "type": "object",
+  "properties": {
+    "agent": {
+      "type": "string",
+      "minLength": 1
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "turn_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ts": {
+      "type": "integer",
+      "exclusiveMinimum": 0
+    },
+    "content": {
+      "type": "string",
+      "minLength": 1
+    },
+    "file": {
+      "type": "string",
+      "minLength": 1
+    },
+    "line": {
+      "type": "integer",
+      "exclusiveMinimum": 0
+    },
+    "hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "project": {
+      "type": "string",
+      "minLength": 1
+    },
+    "redacted": {
+      "type": "boolean"
+    },
+    "redaction_applied": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "agent",
+    "session_id",
+    "turn_id",
+    "ts",
+    "content",
+    "hash",
+    "tags",
+    "project",
+    "redacted"
+  ],
+  "additionalProperties": false,
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

@@ -1,0 +1,27 @@
+{
+  "name": "nexus",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "可插拔的统一 AI Agent 操作系统：DSH 执行 × Omnigent 治理 × Funes 记忆",
+  "license": "Apache-2.0",
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "pnpm -r --if-present build",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "lint": "eslint .",
+    "test": "pnpm -r --if-present test",
+    "test:coverage": "pnpm -r --if-present test:coverage",
+    "bench": "pnpm build && pnpm -r --if-present bench",
+    "gen:schemas": "pnpm -r --if-present gen:schemas"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.20.0",
+    "eslint": "^9.20.0",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.24.0"
+  }
+}

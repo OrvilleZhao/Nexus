@@ -1,0 +1,283 @@
+{
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "const": "tool_call"
+        },
+        "query": {
+          "type": "object",
+          "properties": {
+            "request_id": {
+              "type": "string",
+              "pattern": "^req-"
+            },
+            "policy_version": {
+              "type": "string",
+              "minLength": 1
+            },
+            "subject": {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "agent"
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "session_id": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "kind",
+                "name",
+                "session_id"
+              ],
+              "additionalProperties": false
+            },
+            "action": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "tool_call"
+                },
+                "tool": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "args_meta": {
+                  "type": "object",
+                  "properties": {
+                    "cmd_hash": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "cmd_class": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "type",
+                "tool",
+                "args_meta"
+              ],
+              "additionalProperties": false
+            },
+            "resource": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "file",
+                    "process",
+                    "network",
+                    "memory",
+                    "credential"
+                  ]
+                },
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "origin": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "request_id",
+            "policy_version",
+            "subject",
+            "action",
+            "resource"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "kind",
+        "query"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "const": "policy_decision"
+        },
+        "decision": {
+          "type": "object",
+          "properties": {
+            "decision": {
+              "type": "string",
+              "enum": [
+                "allow",
+                "deny",
+                "pause"
+              ]
+            },
+            "reason_code": {
+              "type": "string",
+              "minLength": 1
+            },
+            "ttl_seconds": {
+              "type": "integer",
+              "exclusiveMinimum": 0
+            },
+            "audit_token": {
+              "type": "string",
+              "pattern": "^aud-"
+            }
+          },
+          "required": [
+            "decision",
+            "reason_code",
+            "ttl_seconds",
+            "audit_token"
+          ],
+          "additionalProperties": false
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^req-"
+        }
+      },
+      "required": [
+        "kind",
+        "decision",
+        "request_id"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "const": "memory.sync"
+        },
+        "turn_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "records": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "deduped": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "kind",
+        "turn_id",
+        "records",
+        "deduped"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "const": "memory.recall"
+        },
+        "query_text_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "hits": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "injected_tokens": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "kind",
+        "query_text_hash",
+        "hits",
+        "injected_tokens"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "const": "audit.beat"
+        },
+        "event": {
+          "type": "object",
+          "properties": {
+            "agent": {
+              "type": "string",
+              "minLength": 1
+            },
+            "session_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "tool_call": {
+              "type": "string",
+              "minLength": 1
+            },
+            "decision": {
+              "type": "string",
+              "enum": [
+                "allow",
+                "deny",
+                "pause",
+                "fail_closed",
+                "degraded"
+              ]
+            },
+            "token": {
+              "type": "string",
+              "pattern": "^aud-"
+            }
+          },
+          "required": [
+            "agent",
+            "session_id",
+            "tool_call",
+            "decision",
+            "token"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "kind",
+        "event"
+      ],
+      "additionalProperties": false
+    }
+  ],
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

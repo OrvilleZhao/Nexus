@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "properties": {
+    "decision": {
+      "type": "string",
+      "enum": [
+        "allow",
+        "deny",
+        "pause"
+      ]
+    },
+    "reason_code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ttl_seconds": {
+      "type": "integer",
+      "exclusiveMinimum": 0
+    },
+    "audit_token": {
+      "type": "string",
+      "pattern": "^aud-"
+    }
+  },
+  "required": [
+    "decision",
+    "reason_code",
+    "ttl_seconds",
+    "audit_token"
+  ],
+  "additionalProperties": false,
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}
