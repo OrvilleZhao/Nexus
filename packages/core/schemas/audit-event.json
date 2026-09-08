@@ -20,7 +20,8 @@
         "deny",
         "pause",
         "fail_closed",
-        "degraded"
+        "degraded",
+        "trajectory.saved"
       ]
     },
     "token": {

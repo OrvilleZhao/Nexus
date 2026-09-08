@@ -36,6 +36,7 @@
 | 5 | **新增开放问题**：SNE 与 MCP 对齐、Omnigent PDP API 形态 spike、降级语义治理边界等 6 项 | 见 §14，评审时逐项决策 |
 | 6 | **v3.1 评审补充**：macOS Apple Silicon（arm64）原生支持 + GitHub Actions 双平台 CI 与 tag 驱动发布（npm 包 + Release tarball）纳入 §5.1/§11；**Nexus Desktop（Tauri 壳 + 公证 dmg）列入 Phase 3（§5.2）**；Q1–Q6 按建议立场采纳；`redacted` 字段语义澄清（§7） | 立项评审结论（2026-09-08） |
 | 7 | **Sprint 1 完成注记**：PDP 契约类型（`PdpClient`/`PepOutcome`）上移 `@nexus/core`（跨包契约唯一事实源）；`currentPolicyVersion()` 移除（policy_version 随 query 携带，缓存键已含版本维度）；`MockPdp`（进程内可编程）落 `@nexus/contracts`；pause 与 ttl=0 决策不缓存 | 实现期决策（2026-09-08） |
+| 8 | **Sprint 2 完成注记**：`@nexus/memory` 新增三模块——`InjectionBudget`（2K token 上限、贪心装入）、`TrajectorySync`（去重窗口 + 审计贯穿）、`FunesClient`（recall/get/status，子进程 fail-closed）；AuditEvent 决策枚举新增 `trajectory.saved` | 实现期决策（2026-09-08） |
 
 **不变项**：ADR-01/02/03 全部维持；五层架构维持；PEP/PDP 接口语义维持（v2.0 §5.1 的 JSON 契约原样继承并 TS 化）。
 
@@ -384,28 +385,28 @@ export interface MemoryHit {
 // ========== @nexus/memory ==========
 
 export interface FunesClient {
-  recall(query: RecallQuery): Promise<MemoryHit[]>
-  /** 经官方 .parquet trace 契约增量导出（不自建嵌入） */
-  exportTurns(records: MemoryRecord[]): Promise<SyncResult>
-  ping(): Promise<boolean>
+  recall(query: string, opts?: RecallOptions): Promise<RecallResult>
+  get(sessionId: string, turnId: string, opts?: GetOptions): Promise<string>
+  status(): Promise<string>
 }
 
-export interface SyncResult { exported: number; deduped: number; rejected_unredacted: number }
+export interface RecallResult { hits: RecallHit[] }
+
+export interface RecallHit {
+  score: number; sessionId: string; turnId: string; text: string; blockType: string
+}
 
 /** 注入预算器：防上下文污染与提示注入的第一道墙 */
-export interface InjectionPlanner {
-  readonly maxTokens: 2000
-  fit(hits: MemoryHit[], systemContextTokens: number): InjectionPlan
+export class InjectionBudget {
+  readonly maxTokens: number
+  consume(tokens: number): boolean
+  selectIncluded(items: Array<{ tokens: number; score: number }>): number[]
 }
 
-export interface InjectionPlan {
-  blocks: Array<{
-    kind: 'existence_summary' | 'evidence' | 'truncation_marker'
-    text: string
-    provenance: MemoryHit['provenance']   // 来源元数据必须随块携带
-  }>
-  totalTokens: number
-  truncated: boolean
+/** 轨迹同步器：去重 + 审计五元组贯穿 */
+export class TrajectorySync {
+  saveTurn(turn: TrajectoryTurn): MemoryRecord | null
+  getRecords(): readonly MemoryRecord[]
 }
 
 // ========== PEP/PDP 契约（位于 @nexus/core：跨包契约唯一事实源） ==========
@@ -544,7 +545,7 @@ flowchart LR
 ✗ 基准：缓存命中路径 p99 < 20ms（tinybench 用例，进 CI 报告不阻断）
 ```
 
-### Sprint 2（memory，~4 天）
+### Sprint 2（memory，~4 天）✅ 已完成（2026-09-08）：28 测试全绿、覆盖率 lines 97.5% / branches 86.5%
 
 ```
 ✗ turn/end 边界触发 SyncPipeline.tick()（SessionEvent 流 mock）

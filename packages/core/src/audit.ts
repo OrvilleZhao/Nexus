@@ -4,7 +4,7 @@ export const AuditEventSchema = z.object({
   agent: z.string().min(1),
   session_id: z.string().min(1),
   tool_call: z.string().min(1),
-  decision: z.enum(['allow', 'deny', 'pause', 'fail_closed', 'degraded']),
+  decision: z.enum(['allow', 'deny', 'pause', 'fail_closed', 'degraded', 'trajectory.saved']),
   token: z.string().regex(/^aud-/)
 })
 
