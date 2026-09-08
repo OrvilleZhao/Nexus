@@ -59,3 +59,20 @@ export function makeRequestId(): string {
 export function makeAuditToken(): string {
   return `aud-${randomUUID()}`
 }
+
+export interface PolicyQueryInput {
+  agent: string
+  sessionId: string
+  tool: string
+  resourceType?: PolicyQuery['resource']['type']
+}
+
+export function makePolicyQuery(input: PolicyQueryInput): PolicyQuery {
+  return parsePolicyQuery({
+    request_id: makeRequestId(),
+    policy_version: 'v1',
+    subject: { kind: 'agent', name: input.agent, session_id: input.sessionId },
+    action: { type: 'tool_call', tool: input.tool, args_meta: {} },
+    resource: { type: input.resourceType ?? 'memory' }
+  })
+}

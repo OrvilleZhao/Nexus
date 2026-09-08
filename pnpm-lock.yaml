@@ -21,6 +21,34 @@ importers:
         specifier: ^8.24.0
         version: 8.70.0(eslint@9.39.5)(typescript@5.9.3)
 
+  packages/adapter-dsh:
+    dependencies:
+      '@nexus/bridge':
+        specifier: workspace:*
+        version: link:../bridge
+      '@nexus/core':
+        specifier: workspace:*
+        version: link:../core
+      '@nexus/memory':
+        specifier: workspace:*
+        version: link:../memory
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.20.1
+      '@vitest/coverage-v8':
+        specifier: ^3.0.0
+        version: 3.2.7(vitest@3.2.7(@types/node@22.20.1)(tsx@4.23.13))
+      tsx:
+        specifier: ^4.0.0
+        version: 4.23.13
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      vitest:
+        specifier: ^3.0.0
+        version: 3.2.7(@types/node@22.20.1)(tsx@4.23.13)
+
   packages/bridge:
     dependencies:
       '@nexus/core':

@@ -37,6 +37,7 @@
 | 6 | **v3.1 评审补充**：macOS Apple Silicon（arm64）原生支持 + GitHub Actions 双平台 CI 与 tag 驱动发布（npm 包 + Release tarball）纳入 §5.1/§11；**Nexus Desktop（Tauri 壳 + 公证 dmg）列入 Phase 3（§5.2）**；Q1–Q6 按建议立场采纳；`redacted` 字段语义澄清（§7） | 立项评审结论（2026-09-08） |
 | 7 | **Sprint 1 完成注记**：PDP 契约类型（`PdpClient`/`PepOutcome`）上移 `@nexus/core`（跨包契约唯一事实源）；`currentPolicyVersion()` 移除（policy_version 随 query 携带，缓存键已含版本维度）；`MockPdp`（进程内可编程）落 `@nexus/contracts`；pause 与 ttl=0 决策不缓存 | 实现期决策（2026-09-08） |
 | 8 | **Sprint 2 完成注记**：`@nexus/memory` 新增三模块——`InjectionBudget`（2K token 上限、贪心装入）、`TrajectorySync`（去重窗口 + 审计贯穿）、`FunesClient`（recall/get/status，子进程 fail-closed）；AuditEvent 决策枚举新增 `trajectory.saved` | 实现期决策（2026-09-08） |
+| 9 | **Sprint 3 完成注记**：`@nexus/adapter-dsh` Cordis 插件骨架（`createNexusPlugin` + `withPepIntercept`）；双工具注册（nexus.memory.recall / nexus.memory.save）；PEP 拦截器集成测试（allow/deny/fail-closed 三路径） | 实现期决策（2026-09-08） |
 
 **不变项**：ADR-01/02/03 全部维持；五层架构维持；PEP/PDP 接口语义维持（v2.0 §5.1 的 JSON 契约原样继承并 TS 化）。
 
@@ -559,7 +560,7 @@ flowchart LR
 ✗ 存在性摘要不含记忆正文（防上下文反噬）
 ```
 
-### Sprint 3（adapter-dsh + demo，~3 天）
+### Sprint 3（adapter-dsh + demo，~3 天）✅ 已完成（2026-09-08）：8 测试全绿、覆盖率 100%
 
 ```
 ✗ 插件 apply(ctx) 后 mock tools 注册表含 nexus.memory.recall / nexus.memory.save
