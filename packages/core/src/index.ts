@@ -1,4 +1,5 @@
 export * from './audit.js'
+export * from './audit-engine.js'
 export * from './cache-key.js'
 export * from './errors.js'
 export * from './memory.js'
