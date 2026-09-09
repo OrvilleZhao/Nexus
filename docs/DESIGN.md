@@ -38,6 +38,7 @@
 | 7 | **Sprint 1 完成注记**：PDP 契约类型（`PdpClient`/`PepOutcome`）上移 `@nexus/core`（跨包契约唯一事实源）；`currentPolicyVersion()` 移除（policy_version 随 query 携带，缓存键已含版本维度）；`MockPdp`（进程内可编程）落 `@nexus/contracts`；pause 与 ttl=0 决策不缓存 | 实现期决策（2026-09-08） |
 | 8 | **Sprint 2 完成注记**：`@nexus/memory` 新增三模块——`InjectionBudget`（2K token 上限、贪心装入）、`TrajectorySync`（去重窗口 + 审计贯穿）、`FunesClient`（recall/get/status，子进程 fail-closed）；AuditEvent 决策枚举新增 `trajectory.saved` | 实现期决策（2026-09-08） |
 | 9 | **Sprint 3 完成注记**：`@nexus/adapter-dsh` Cordis 插件骨架（`createNexusPlugin` + `withPepIntercept`）；双工具注册（nexus.memory.recall / nexus.memory.save）；PEP 拦截器集成测试（allow/deny/fail-closed 三路径） | 实现期决策（2026-09-08） |
+| 10 | **Sprint 4 完成注记**：`@nexus/adapter-omnigent` Omnigent PDP 适配器（HTTP POST `/sessions/{id}/policies/evaluate`）；PolicyQuery → Omnigent event 映射；fail-closed 三因由（OMNIGENT_TIMEOUT / OMNIGENT_UNREACHABLE / OMNIGENT_MALFORMED）；ASK → pause 映射；可注入 fetch + apiKey + timeoutMs | 实现期决策（2026-09-09） |
 
 **不变项**：ADR-01/02/03 全部维持；五层架构维持；PEP/PDP 接口语义维持（v2.0 §5.1 的 JSON 契约原样继承并 TS 化）。
 
