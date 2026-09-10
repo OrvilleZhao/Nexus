@@ -7,9 +7,6 @@
 [![status](https://img.shields.io/badge/status-v0.1.0%20·%20Phase%201%20完成-brightgreen)](docs/DESIGN.md)
 [![license](https://img.shields.io/badge/license-Apache--2.0-blue)](#许可证)
 [![tests](https://img.shields.io/badge/tests-154%20passed-brightgreen)](#测试覆盖)
-[![dsh](https://img.shields.io/badge/上游-DeepSeek%20Harness%20MIT-green)](https://github.com/deepseek-ai/deepseek-harness)
-[![omnigent](https://img.shields.io/badge/上游-Omnigent%20Apache--2.0-green)](https://github.com/omnigent-ai/omnigent)
-[![funes](https://img.shields.io/badge/上游-Funes%20Apache--2.0-green)](https://github.com/huggingface/funes)
 
 **Nexus = 以 DeepSeek Harness 为执行核心、Omnigent 为治理层（PDP 唯一事实源）、Funes 为记忆层的企业级 Agent 集成发行版。**
 
