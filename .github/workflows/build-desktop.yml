@@ -11,29 +11,29 @@ permissions:
 
 jobs:
   build-dmg:
+    name: macOS DMG (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
     strategy:
       fail-fast: false
       matrix:
         include:
-          - os: macos-latest
+          - arch: arm64
+            runner: macos-latest
             target: aarch64-apple-darwin
-            label: mac-arm64
-          - os: macos-13
+          - arch: x64
+            runner: macos-13
             target: x86_64-apple-darwin
-            label: mac-x64
-    runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: pnpm
 
-      - name: Install Rust
+      - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
@@ -43,42 +43,55 @@ jobs:
         with:
           workspaces: apps/desktop/src-tauri -> target
 
-      - name: Install system dependencies (macOS)
-        if: runner.os == 'macOS'
-        run: brew install librsvg2 || true
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
 
-      - run: pnpm install --frozen-lockfile
+      - name: Install root deps
+        run: pnpm install --frozen-lockfile
 
       - name: Build Nexus packages
         run: pnpm build
 
+      - name: Install desktop deps
+        working-directory: apps/desktop
+        run: pnpm install --frozen-lockfile
+
       - name: Build frontend (TS → JS)
         working-directory: apps/desktop
-        run: pnpm install --frozen-lockfile && pnpm build:frontend
+        run: node build.mjs
 
-      - name: Build Tauri app
+      - name: Build Rust binary
+        working-directory: apps/desktop/src-tauri
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Package DMG
         working-directory: apps/desktop
-        run: pnpm tauri build --target ${{ matrix.target }}
-
-      - name: Collect DMGs
-        if: runner.os == 'macOS'
         run: |
-          mkdir -p artifacts
-          find apps/desktop/src-tauri/target/${{ matrix.target }}/release/bundle/dmg \
-            -name '*.dmg' 2>/dev/null | while read f; do cp "$f" artifacts/; done
-          find apps/desktop/src-tauri/target/${{ matrix.target }}/release/bundle/macos \
-            -name '*.app' -maxdepth 1 2>/dev/null | while read f; do \
-              tar czf "$(echo "$f" | sed 's/\.app/.app.tar.gz/')" -C "$(dirname "$f")" "$(basename "$f")" && \
-              cp "$(echo "$f" | sed 's/\.app/.app.tar.gz/')" artifacts/; \
-            done
-          ls -la artifacts/
+          VERSION="${GITHUB_REF_NAME#v}"
+          VERSION="${VERSION#V}"
+          VERSION="${VERSION//\//-}"
+          if [ -z "$VERSION" ] || [ "$VERSION" = "main" ]; then
+            VERSION="0.0.0-${GITHUB_RUN_NUMBER}"
+          fi
+          BINARY_DIR="./src-tauri/target/${{ matrix.target }}/release" \
+            bash ../../scripts/package-dmg.sh "$VERSION" "${{ matrix.arch }}"
 
-      - name: Upload artifact
+      - name: Verify DMG
+        run: |
+          set -euo pipefail
+          DMG=$(find apps/desktop/dist/macos -name '*.dmg' | head -1)
+          echo "Found DMG: $DMG"
+          test -f "$DMG"
+          SIZE=$(stat -f%z "$DMG" 2>/dev/null || stat -c%s "$DMG")
+          echo "DMG size: $SIZE bytes"
+          test "$SIZE" -gt 1000000
+
+      - name: Upload DMG
         uses: actions/upload-artifact@v4
         with:
-          name: nexus-desktop-${{ matrix.label }}
-          path: artifacts/*
-          if-no-files-found: warn
+          name: nexus-desktop-${{ matrix.arch }}-dmg
+          path: apps/desktop/dist/macos/*.dmg
+          if-no-files-found: error
 
   release-dmg:
     if: startsWith(github.ref, 'refs/tags/')
@@ -88,7 +101,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           path: artifacts
-          pattern: nexus-desktop-*
+          pattern: nexus-desktop-*-dmg
 
       - name: Attach DMGs to GitHub Release
         uses: softprops/action-gh-release@v2
@@ -99,6 +112,6 @@ jobs:
             ## Nexus Desktop
 
             macOS `.dmg` 安装包：
-            - `nexus-desktop-mac-arm64.dmg` — Apple Silicon (M1/M2/M3/M4)
-            - `nexus-desktop-mac-x64.dmg` — Intel Mac
+            - `nexus-desktop-arm64.dmg` — Apple Silicon (M1/M2/M3/M4)
+            - `nexus-desktop-x64.dmg` — Intel Mac
         generate_release_notes: true
