@@ -45,6 +45,11 @@
 | 14 | **Sprint 8 完成注记**：`@nexus/sdk` 一键集成层——`createNexusAdapter(config)` 返回统一 adapter（intercept/saveTurn/recall/getAuditSummary）；可注入 PDP + FunesClient exec + injectionBudgetTokens + auditSink | 实现期决策（2026-09-10） |
 | 15 | **Sprint 9 完成注记**：所有 6 个包 npm publishable（package.json description/repository/files 完备）；release.yml 已验证可打包（core/bridge/memory/adapter-dsh/adapter-omnigent/sdk）；Phase 3 全部完成 | 实现期决策（2026-09-10） |
 | 16 | **Nexus Desktop（Tauri dmg）**：新增 `apps/desktop` Tauri v2 项目（Rust backend + 简约前端）；`.github/workflows/build-desktop.yml` 支持 macOS ARM64 + x64 双架构 dmg 构建；tag 推送自动构建并挂载到 GitHub Release | 实现期决策（2026-09-10） |
+| 17 | **Sprint 10 完成注记**：`@nexus/core` 审计工作流管道——`AuditWorkflow`（可插拔 stage 链：recon→architect→sast→judge→reporter，支持事件转换/发现聚合/裁决/报告生成/上下文传递）；9 测试全绿 | 实现期决策（2026-09-10） |
+| 18 | **Sprint 11 完成注记**：`@nexus/core` 记忆互操作 schema——`MemoryRecordV2`（`schema_version: nexus/memory/1`，zod 运行时校验 + JSON Schema 导出，跨语言契约）；`validateMemoryRecordV2` / `toMemoryRecordV2`（v1→v2 升级）；12 测试全绿 | 实现期决策（2026-09-10） |
+| 19 | **Sprint 12 完成注记**：`@nexus/core` 社区契约测试矩阵——DSH/Funes/PDP 三方 zod schema + JSON Schema 双格式契约 + `validateDshPayload`/`validateFunesPayload`/`validatePdpPayload` 校验器；14 测试全绿 | 实现期决策（2026-09-10） |
+| 20 | **Sprint 13 完成注记**：`@nexus/core` 策略回灌闭环——`PolicyFeedbackEngine`（违规记录/频率统计/阈值触发 tighten/规则 suppress）；9 测试全绿 | 实现期决策（2026-09-10） |
+| 21 | **Sprint 14 完成注记**：`@nexus/core` 多 Agent 冲突解决——`WorkspaceIsolation`（互斥锁 + fencing token 递增 + owner 校验 + 强制释放）；11 测试全绿 | 实现期决策（2026-09-10） |
 
 **不变项**：ADR-01/02/03 全部维持；五层架构维持；PEP/PDP 接口语义维持（v2.0 §5.1 的 JSON 契约原样继承并 TS 化）。
 
