@@ -6,7 +6,7 @@
 [![Build Desktop](https://github.com/OrvilleZhao/Nexus/actions/workflows/build-desktop.yml/badge.svg)](https://github.com/OrvilleZhao/Nexus/actions/workflows/build-desktop.yml)
 [![status](https://img.shields.io/badge/status-v0.1.0%20·%20Phase%201%20完成-brightgreen)](docs/DESIGN.md)
 [![license](https://img.shields.io/badge/license-Apache--2.0-blue)](#许可证)
-[![tests](https://img.shields.io/badge/tests-154%20passed-brightgreen)](#测试覆盖)
+[![tests](https://img.shields.io/badge/tests-163%20passed-brightgreen)](#测试覆盖)
 
 **Nexus = 以 DeepSeek Harness 为执行核心、Omnigent 为治理层（PDP 唯一事实源）、Funes 为记忆层的企业级 Agent 集成发行版。**
 
@@ -14,19 +14,19 @@
 
 ## 当前状态
 
-9 个 Sprint 完成，154 个测试全绿，6 个包可发布。
+14 个 Sprint 完成，163 个测试全绿，所有 Phase 已完成。
 
 | Phase | 目标 | 状态 |
 |---|---|---|
 | **Phase 1** 价值验证 | dsh x funes 集成，PEP 骨架 | 已完成（Sprint 0-3） |
-| **Phase 2** 治理增强 | Omnigent 接入，双视角审计引擎 | 进行中 ~60%（Sprint 4-6 已交付 adapter-omnigent / AuditEngine / PauseHandler） |
-| **Phase 3** 生态标准化 | SNE 开源 / SDK / Desktop dmg | 进行中 ~70%（Sprint 7-9 已交付 SNE / sdk / packaging / dmg 构建） |
+| **Phase 2** 治理增强 | Omnigent 接入、审计工作流、策略回灌、工作区隔离 | 已完成（Sprint 4-6, 10, 13-14） |
+| **Phase 3** 生态标准化 | SNE 开源 / SDK / 记忆互操作 / 契约测试 / Desktop dmg | 已完成（Sprint 7-9, 11-12） |
 
 ### 已交付包
 
 | 包 | 版本 | 测试 | 核心能力 |
 |---|---|---|---|
-| `@nexus/core` | 0.1.0 | 59 | 领域模型、SNE 事件、审计五元组、双视角审计引擎、缓存键 |
+| `@nexus/core` | 0.1.0 | 114 | 领域模型、SNE 事件、审计五元组、审计工作流（recon→architect→sast→judge→reporter）、记忆互操作 schema（JSON Schema）、DSH/Funes/PDP 契约测试矩阵、策略回灌引擎、工作区隔离 + fencing token |
 | `@nexus/bridge` | 0.1.0 | 41 | PEP 两级拦截、决策缓存、静态规则、PauseHandler 文件队列人审 |
 | `@nexus/memory` | 0.0.1 | 28 | InjectionBudget 装入、TrajectorySync 去重、FunesClient CLI/MCP |
 | `@nexus/adapter-dsh` | 0.0.1 | 8 | Cordis 插件骨架、PEP 拦截器、双工具注册 |
@@ -190,13 +190,13 @@ BINARY_DIR=./src-tauri/target/aarch64-apple-darwin/release bash ../../scripts/pa
 
 | 包 | 测试数 | 覆盖率 |
 |---|---|---|
-| `@nexus/core` | 59 | 97.6% |
+| `@nexus/core` | 114 | >95% |
 | `@nexus/bridge` | 41 | 95.1% |
 | `@nexus/memory` | 28 | 97.5% |
 | `@nexus/adapter-omnigent` | 11 | 97.6% |
 | `@nexus/adapter-dsh` | 8 | 100% |
 | `@nexus/sdk` | 7 | 100% |
-| **合计** | **154** | **>95%** |
+| **合计** | **163** | **>95%** |
 
 ## 许可证
 

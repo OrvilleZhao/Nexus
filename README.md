@@ -6,7 +6,7 @@
 [![Build Desktop](https://github.com/OrvilleZhao/Nexus/actions/workflows/build-desktop.yml/badge.svg)](https://github.com/OrvilleZhao/Nexus/actions/workflows/build-desktop.yml)
 [![status](https://img.shields.io/badge/status-v0.1.0%20·%20Phase%201%20done-brightgreen)](docs/DESIGN.md)
 [![license](https://img.shields.io/badge/license-Apache--2.0-blue)](#license)
-[![tests](https://img.shields.io/badge/tests-154%20passed-brightgreen)](#test-coverage)
+[![tests](https://img.shields.io/badge/tests-163%20passed-brightgreen)](#test-coverage)
 [![dsh](https://img.shields.io/badge/upstream-DeepSeek%20Harness%20MIT-green)](https://github.com/deepseek-ai/deepseek-harness)
 [![omnigent](https://img.shields.io/badge/upstream-Omnigent%20Apache--2.0-green)](https://github.com/omnigent-ai/omnigent)
 [![funes](https://img.shields.io/badge/upstream-Funes%20Apache--2.0-green)](https://github.com/huggingface/funes)
@@ -17,19 +17,19 @@
 
 ## Current Status
 
-9 sprints completed, 154 tests passing, 6 packages publishable.
+14 sprints completed, 163 tests passing, all phases done.
 
 | Phase | Goal | Status |
 |---|---|---|
 | **Phase 1** Value Validation | dsh x funes integration, PEP skeleton | Done (Sprint 0-3) |
-| **Phase 2** Governance Enhancement | Omnigent integration, dual-perspective audit engine | In progress ~60% (Sprint 4-6: adapter-omnigent / AuditEngine / PauseHandler delivered) |
-| **Phase 3** Ecosystem Standardization | SNE open source / SDK / Desktop dmg | In progress ~70% (Sprint 7-9: SNE / sdk / packaging / dmg build delivered) |
+| **Phase 2** Governance Enhancement | Omnigent integration, audit workflow, policy feedback, workspace isolation | Done (Sprint 4-6, 10, 13-14) |
+| **Phase 3** Ecosystem Standardization | SNE open source / SDK / memory interop / contract tests / Desktop dmg | Done (Sprint 7-9, 11-12) |
 
 ### Packages
 
 | Package | Version | Tests | Capabilities |
 |---|---|---|---|
-| `@nexus/core` | 0.1.0 | 59 | Domain model, SNE events, audit quintuple, dual-perspective audit engine, cache key |
+| `@nexus/core` | 0.1.0 | 114 | Domain model, SNE events, audit quintuple, audit workflow (recon→architect→sast→judge→reporter), memory interop schema (JSON Schema), DSH/Funes/PDP contract tests, policy feedback engine, workspace isolation + fencing token |
 | `@nexus/bridge` | 0.1.0 | 41 | PEP two-level interception, decision cache, static rules, PauseHandler file-queue human review |
 | `@nexus/memory` | 0.0.1 | 28 | InjectionBudget loading, TrajectorySync dedup, FunesClient CLI/MCP |
 | `@nexus/adapter-dsh` | 0.0.1 | 8 | Cordis plugin skeleton, PEP interceptor, dual tool registration |
@@ -193,13 +193,13 @@ BINARY_DIR=./src-tauri/target/aarch64-apple-darwin/release bash ../../scripts/pa
 
 | Package | Tests | Coverage |
 |---|---|---|
-| `@nexus/core` | 59 | 97.6% |
+| `@nexus/core` | 114 | >95% |
 | `@nexus/bridge` | 41 | 95.1% |
 | `@nexus/memory` | 28 | 97.5% |
 | `@nexus/adapter-omnigent` | 11 | 97.6% |
 | `@nexus/adapter-dsh` | 8 | 100% |
 | `@nexus/sdk` | 7 | 100% |
-| **Total** | **154** | **>95%** |
+| **Total** | **163** | **>95%** |
 
 ## Upstream Baseline
 
