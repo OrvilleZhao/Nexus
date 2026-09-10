@@ -17,7 +17,15 @@
 
 ## 当前状态
 
-Phase 1 全部完成（9 Sprint），154 个测试全绿，6 个包可发布：
+9 Sprint 完成，154 个测试全绿，6 个包可发布。
+
+| Phase | 目标 | 状态 |
+|---|---|---|
+| **Phase 1** 价值验证 | dsh x funes 集成，PEP 骨架 | 已完成（Sprint 0-3） |
+| **Phase 2** 治理增强 | Omnigent 接入，双视角审计引擎 | 进行中 ~60%（Sprint 4-6 已交付 adapter-omnigent / AuditEngine / PauseHandler） |
+| **Phase 3** 生态标准化 | SNE 开源 / SDK / Desktop dmg | 进行中 ~70%（Sprint 7-9 已交付 SNE / sdk / packaging / dmg 构建） |
+
+### 已交付包
 
 | 包 | 版本 | 测试 | 核心能力 |
 |---|---|---|---|
