@@ -42,6 +42,7 @@
 | 11 | **Sprint 5 完成注记**：`@nexus/core` 新增 `AuditEngine`（双视角审计：per-session / per-agent 查询 + 摘要统计：allow/deny/failClosed/paused/toolCalls） | 实现期决策（2026-09-09） |
 | 12 | **Sprint 6 完成注记**：`@nexus/bridge` 新增 `PauseHandler`（pause → 文件队列人审：handle/respond/getStatus；可注入 readFile/writeFile） | 实现期决策（2026-09-09） |
 | 13 | **Sprint 7 完成注记**：`@nexus/core` SNE 开源——`SneeEmitter`（类型化事件发射：on/off/emit + 通配符 `*`）、`sne-mcp.ts`（SNE ↔ MCP notification 双向 roundtrip）、公共 API 文档化 | 实现期决策（2026-09-10） |
+| 14 | **Sprint 8 完成注记**：`@nexus/sdk` 一键集成层——`createNexusAdapter(config)` 返回统一 adapter（intercept/saveTurn/recall/getAuditSummary）；可注入 PDP + FunesClient exec + injectionBudgetTokens + auditSink | 实现期决策（2026-09-10） |
 
 **不变项**：ADR-01/02/03 全部维持；五层架构维持；PEP/PDP 接口语义维持（v2.0 §5.1 的 JSON 契约原样继承并 TS 化）。
 

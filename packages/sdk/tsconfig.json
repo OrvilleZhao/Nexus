@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "@nexus/core": ["../core/src/index.ts"],
+      "@nexus/bridge": ["../bridge/src/index.ts"],
+      "@nexus/memory": ["../memory/src/index.ts"]
+    }
+  },
+  "include": ["src", "test"]
+}
