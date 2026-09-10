@@ -1,14 +1,6 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct SessionInfo {
-    pub id: String,
-    pub title: String,
-    pub created_at: u64,
-    pub message_count: usize,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
 pub struct AgentStatus {
     pub core: bool,
     pub bridge: bool,
