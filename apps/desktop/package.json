@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "tauri dev",
-    "build": "tsc && tauri build",
+    "build": "node build.mjs && tauri build",
+    "build:frontend": "node build.mjs",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2",
+    "esbuild": "^0.25.0",
     "typescript": "^5.7.0"
   },
   "dependencies": {

@@ -43,25 +43,35 @@ jobs:
         with:
           workspaces: apps/desktop/src-tauri -> target
 
+      - name: Install system dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: brew install librsvg2 || true
+
       - run: pnpm install --frozen-lockfile
 
       - name: Build Nexus packages
         run: pnpm build
 
-      - name: Build frontend
+      - name: Build frontend (TS → JS)
         working-directory: apps/desktop
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile && pnpm build:frontend
 
       - name: Build Tauri app
         working-directory: apps/desktop
         run: pnpm tauri build --target ${{ matrix.target }}
 
       - name: Collect DMGs
+        if: runner.os == 'macOS'
         run: |
           mkdir -p artifacts
-          find apps/desktop/src-tauri/target/${{ matrix.target }}/release/bundle \
-            -name '*.dmg' -o -name '*.app.tar.gz' \
-            | while read f; do cp "$f" artifacts/; done
+          find apps/desktop/src-tauri/target/${{ matrix.target }}/release/bundle/dmg \
+            -name '*.dmg' 2>/dev/null | while read f; do cp "$f" artifacts/; done
+          find apps/desktop/src-tauri/target/${{ matrix.target }}/release/bundle/macos \
+            -name '*.app' -maxdepth 1 2>/dev/null | while read f; do \
+              tar czf "$(echo "$f" | sed 's/\.app/.app.tar.gz/')" -C "$(dirname "$f")" "$(basename "$f")" && \
+              cp "$(echo "$f" | sed 's/\.app/.app.tar.gz/')" artifacts/; \
+            done
+          ls -la artifacts/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

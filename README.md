@@ -153,18 +153,30 @@ Tauri v2 桌面应用，仿 Codex 布局：
 - 底部：终端面板（Output / Audit 双 tab）
 - 顶部：系统状态栏（Core / PEP / Memory / PDP 实时指示）
 
-### 构建 dmg
+### CI 自动构建
+
+每次 push 到 `main` 自动构建 macOS ARM64 + x64 dmg。推送 `v*` tag 时 dmg 自动挂载到 GitHub Release。
+
+### 下载安装 dmg
+
+1. 打开 [Actions → Build Desktop](https://github.com/OrvilleZhao/Nexus/actions/workflows/build-desktop.yml)
+2. 点击最近一次成功的 workflow run
+3. 在 **Artifacts** 区域下载对应架构的 zip：
+   - `nexus-desktop-mac-arm64.zip` — Apple Silicon（M1/M2/M3/M4）
+   - `nexus-desktop-mac-x64.zip` — Intel Mac
+4. 解压得到 `.dmg` 文件，双击打开
+5. 将 **Nexus Desktop** 拖入 **Applications** 文件夹
+6. 首次打开：右键点击应用 → 选择 **打开**（未签名应用需手动信任）
+
+### 本地构建 dmg
 
 ```bash
 # 需要 macOS + Rust toolchain
 cd apps/desktop
 pnpm install
+pnpm build:frontend         # 编译 TypeScript → JS
 pnpm tauri build            # 输出到 src-tauri/target/release/bundle/dmg/
 ```
-
-### CI 自动构建
-
-每次 push 到 `main` 自动构建 macOS ARM64 + x64 dmg，从 Actions 页面下载 Artifact。推送 `v*` tag 时 dmg 自动挂载到 GitHub Release。
 
 ## 测试覆盖
 
