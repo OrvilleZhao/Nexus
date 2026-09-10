@@ -114,4 +114,4 @@ jobs:
             macOS `.dmg` 安装包：
             - `nexus-desktop-arm64.dmg` — Apple Silicon (M1/M2/M3/M4)
             - `nexus-desktop-x64.dmg` — Intel Mac
-        generate_release_notes: true
+          generate_release_notes: true
