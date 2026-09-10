@@ -23,7 +23,7 @@ cp "$BINARY_DIR/nexus-desktop" "$STAGE_DIR/$APP_NAME.app/Contents/MacOS/$APP_NAM
 chmod +x "$STAGE_DIR/$APP_NAME.app/Contents/MacOS/$APP_NAME"
 
 # Copy frontend assets
-cp -R src/dist "$STAGE_DIR/$APP_NAME.app/Contents/Resources/web"
+cp -R dist "$STAGE_DIR/$APP_NAME.app/Contents/Resources/web"
 
 # Info.plist
 cat > "$STAGE_DIR/$APP_NAME.app/Contents/Info.plist" << PLIST
