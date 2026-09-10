@@ -40,6 +40,7 @@
 | 9 | **Sprint 3 完成注记**：`@nexus/adapter-dsh` Cordis 插件骨架（`createNexusPlugin` + `withPepIntercept`）；双工具注册（nexus.memory.recall / nexus.memory.save）；PEP 拦截器集成测试（allow/deny/fail-closed 三路径） | 实现期决策（2026-09-08） |
 | 10 | **Sprint 4 完成注记**：`@nexus/adapter-omnigent` Omnigent PDP 适配器（HTTP POST `/sessions/{id}/policies/evaluate`）；PolicyQuery → Omnigent event 映射；fail-closed 三因由（OMNIGENT_TIMEOUT / OMNIGENT_UNREACHABLE / OMNIGENT_MALFORMED）；ASK → pause 映射；可注入 fetch + apiKey + timeoutMs | 实现期决策（2026-09-09） |
 | 11 | **Sprint 5 完成注记**：`@nexus/core` 新增 `AuditEngine`（双视角审计：per-session / per-agent 查询 + 摘要统计：allow/deny/failClosed/paused/toolCalls） | 实现期决策（2026-09-09） |
+| 12 | **Sprint 6 完成注记**：`@nexus/bridge` 新增 `PauseHandler`（pause → 文件队列人审：handle/respond/getStatus；可注入 readFile/writeFile） | 实现期决策（2026-09-09） |
 
 **不变项**：ADR-01/02/03 全部维持；五层架构维持；PEP/PDP 接口语义维持（v2.0 §5.1 的 JSON 契约原样继承并 TS 化）。
 
