@@ -14,7 +14,7 @@
 
 ## 当前状态
 
-9 Sprint 完成，154 个测试全绿，6 个包可发布。
+9 个 Sprint 完成，154 个测试全绿，6 个包可发布。
 
 | Phase | 目标 | 状态 |
 |---|---|---|
@@ -53,6 +53,8 @@
 | **失控** | 提示词级治理可被注入绕过 | Omnigent 基础设施级 PDP，模型不可覆盖 |
 | **无据可查** | 缺少完整证据链 | 审计五元组 + 双视角审计引擎 |
 | **锁定** | 押注单一 harness 风险大 | 桥接层防腐蚀：DSH 原生 + 其他协议适配 |
+
+治理由基础设施层强制，而非系统提示词建议——这是 Nexus 安全叙事的根基。
 
 ## 总体架构
 
@@ -95,6 +97,8 @@ nexus/
 │   └── contracts/           # @nexus/contracts    MockPdp（private）
 ├── apps/
 │   └── desktop/             # @nexus/desktop      Tauri v2 桌面壳（macOS dmg）
+├── scripts/
+│   └── package-dmg.sh       # macOS DMG 打包脚本
 ├── docs/
 │   └── DESIGN.md            # 技术设计 v3.1
 ├── .github/workflows/
@@ -120,7 +124,7 @@ pnpm install                # 需 Node >=22
 pnpm typecheck              # 全 workspace TypeScript 类型检查
 pnpm lint                   # ESLint（flat config）
 pnpm test                   # Vitest 全量测试（154 tests）
-pnpm test:coverage          # 覆盖率（lines >=90 / branches >=80）
+pnpm test:coverage          # 覆盖率门禁（lines >=90 / branches >=80）
 pnpm build                  # 各包 tsc 编译到 dist/
 pnpm bench                  # PEP 缓存命中 p99 <20ms 基准
 ```
@@ -158,17 +162,13 @@ Tauri v2 桌面应用，仿 Codex 布局：
 - 底部：终端面板（Output / Audit 双 tab）
 - 顶部：系统状态栏（Core / PEP / Memory / PDP 实时指示）
 
-### CI 自动构建
-
-每次 push 到 `main` 自动构建 macOS ARM64 + x64 dmg。推送 `v*` tag 时 dmg 自动挂载到 GitHub Release。
-
 ### 下载安装 dmg
 
 1. 打开 [Actions -> Build Desktop](https://github.com/OrvilleZhao/Nexus/actions/workflows/build-desktop.yml)
 2. 点击最近一次成功的 workflow run
 3. 在 **Artifacts** 区域下载对应架构的 zip：
-   - `nexus-desktop-mac-arm64.zip` — Apple Silicon（M1/M2/M3/M4）
-   - `nexus-desktop-mac-x64.zip` — Intel Mac
+   - `nexus-desktop-arm64-dmg.zip` — Apple Silicon（M1/M2/M3/M4）
+   - `nexus-desktop-x64-dmg.zip` — Intel Mac
 4. 解压得到 `.dmg` 文件，双击打开
 5. 将 **Nexus Desktop** 拖入 **Applications** 文件夹
 6. 首次打开：右键点击应用 -> 选择 **打开**（未签名应用需手动信任）
@@ -180,7 +180,10 @@ Tauri v2 桌面应用，仿 Codex 布局：
 cd apps/desktop
 pnpm install
 pnpm build:frontend         # 编译 TypeScript -> JS
-pnpm tauri build            # 输出到 src-tauri/target/release/bundle/dmg/
+cd src-tauri
+cargo build --release --target aarch64-apple-darwin
+cd ..
+BINARY_DIR=./src-tauri/target/aarch64-apple-darwin/release bash ../../scripts/package-dmg.sh 0.1.0 arm64
 ```
 
 ## 测试覆盖
@@ -195,12 +198,6 @@ pnpm tauri build            # 输出到 src-tauri/target/release/bundle/dmg/
 | `@nexus/sdk` | 7 | 100% |
 | **合计** | **154** | **>95%** |
 
-## 事实基线
-
-- **DeepSeek Harness**：MIT，Cordis 微内核，"Everything is a Plugin"，developer preview（存在 breaking changes）
-- **Omnigent**：Apache-2.0，Databricks 开源，meta-harness（Python），contextual policies + 云沙箱
-- **Funes**：Apache-2.0，HF 发布，Rust 单二进制，Lance 数据集，MCP 模式
-
 ## 许可证
 
-Apache-2.0（与 Omnigent/Funes 同为宽松协议，DSH MIT 兼容）。
+Apache-2.0

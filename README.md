@@ -1,134 +1,138 @@
 # Nexus
 
-> **可插拔的统一 AI Agent 操作系统** —— DSH 执行 x Omnigent 治理 x Funes 记忆
+> **Pluggable Unified AI Agent Operating System** — DSH Execution x Omnigent Governance x Funes Memory
 
 [![CI](https://github.com/OrvilleZhao/Nexus/actions/workflows/ci.yml/badge.svg)](https://github.com/OrvilleZhao/Nexus/actions/workflows/ci.yml)
 [![Build Desktop](https://github.com/OrvilleZhao/Nexus/actions/workflows/build-desktop.yml/badge.svg)](https://github.com/OrvilleZhao/Nexus/actions/workflows/build-desktop.yml)
-[![status](https://img.shields.io/badge/status-v0.1.0%20·%20Phase%201%20完成-brightgreen)](docs/DESIGN.md)
-[![license](https://img.shields.io/badge/license-Apache--2.0-blue)](#许可证)
-[![tests](https://img.shields.io/badge/tests-154%20passed-brightgreen)](#测试覆盖)
-[![dsh](https://img.shields.io/badge/上游-DeepSeek%20Harness%20MIT-green)](https://github.com/deepseek-ai/deepseek-harness)
-[![omnigent](https://img.shields.io/badge/上游-Omnigent%20Apache--2.0-green)](https://github.com/omnigent-ai/omnigent)
-[![funes](https://img.shields.io/badge/上游-Funes%20Apache--2.0-green)](https://github.com/huggingface/funes)
+[![status](https://img.shields.io/badge/status-v0.1.0%20·%20Phase%201%20done-brightgreen)](docs/DESIGN.md)
+[![license](https://img.shields.io/badge/license-Apache--2.0-blue)](#license)
+[![tests](https://img.shields.io/badge/tests-154%20passed-brightgreen)](#test-coverage)
+[![dsh](https://img.shields.io/badge/upstream-DeepSeek%20Harness%20MIT-green)](https://github.com/deepseek-ai/deepseek-harness)
+[![omnigent](https://img.shields.io/badge/upstream-Omnigent%20Apache--2.0-green)](https://github.com/omnigent-ai/omnigent)
+[![funes](https://img.shields.io/badge/upstream-Funes%20Apache--2.0-green)](https://github.com/huggingface/funes)
 
-**Nexus = 以 DeepSeek Harness 为执行核心、Omnigent 为治理层（PDP 唯一事实源）、Funes 为记忆层的企业级 Agent 集成发行版。**
+**Nexus = Enterprise-grade Agent integration distribution with DeepSeek Harness as execution core, Omnigent as governance layer (PDP single source of truth), and Funes as memory layer.**
 
 ---
 
-## 当前状态
+## Current Status
 
-9 Sprint 完成，154 个测试全绿，6 个包可发布。
+9 sprints completed, 154 tests passing, 6 packages publishable.
 
-| Phase | 目标 | 状态 |
+| Phase | Goal | Status |
 |---|---|---|
-| **Phase 1** 价值验证 | dsh x funes 集成，PEP 骨架 | 已完成（Sprint 0-3） |
-| **Phase 2** 治理增强 | Omnigent 接入，双视角审计引擎 | 进行中 ~60%（Sprint 4-6 已交付 adapter-omnigent / AuditEngine / PauseHandler） |
-| **Phase 3** 生态标准化 | SNE 开源 / SDK / Desktop dmg | 进行中 ~70%（Sprint 7-9 已交付 SNE / sdk / packaging / dmg 构建） |
+| **Phase 1** Value Validation | dsh x funes integration, PEP skeleton | Done (Sprint 0-3) |
+| **Phase 2** Governance Enhancement | Omnigent integration, dual-perspective audit engine | In progress ~60% (Sprint 4-6: adapter-omnigent / AuditEngine / PauseHandler delivered) |
+| **Phase 3** Ecosystem Standardization | SNE open source / SDK / Desktop dmg | In progress ~70% (Sprint 7-9: SNE / sdk / packaging / dmg build delivered) |
 
-### 已交付包
+### Packages
 
-| 包 | 版本 | 测试 | 核心能力 |
+| Package | Version | Tests | Capabilities |
 |---|---|---|---|
-| `@nexus/core` | 0.1.0 | 59 | 领域模型、SNE 事件、审计五元组、双视角审计引擎、缓存键 |
-| `@nexus/bridge` | 0.1.0 | 41 | PEP 两级拦截、决策缓存、静态规则、PauseHandler 文件队列人审 |
-| `@nexus/memory` | 0.0.1 | 28 | InjectionBudget 装入、TrajectorySync 去重、FunesClient CLI/MCP |
-| `@nexus/adapter-dsh` | 0.0.1 | 8 | Cordis 插件骨架、PEP 拦截器、双工具注册 |
-| `@nexus/adapter-omnigent` | 0.0.1 | 11 | Omnigent PDP HTTP 适配器、fail-closed、injectable fetch |
-| `@nexus/sdk` | 0.0.1 | 7 | 一键集成层 `createNexusAdapter(config)` |
+| `@nexus/core` | 0.1.0 | 59 | Domain model, SNE events, audit quintuple, dual-perspective audit engine, cache key |
+| `@nexus/bridge` | 0.1.0 | 41 | PEP two-level interception, decision cache, static rules, PauseHandler file-queue human review |
+| `@nexus/memory` | 0.0.1 | 28 | InjectionBudget loading, TrajectorySync dedup, FunesClient CLI/MCP |
+| `@nexus/adapter-dsh` | 0.0.1 | 8 | Cordis plugin skeleton, PEP interceptor, dual tool registration |
+| `@nexus/adapter-omnigent` | 0.0.1 | 11 | Omnigent PDP HTTP adapter, fail-closed, injectable fetch |
+| `@nexus/sdk` | 0.0.1 | 7 | One-line integration `createNexusAdapter(config)` |
 
-## 平台支持
+## Platform Support
 
-| 平台 | 状态 |
+| Platform | Status |
 |---|---|
-| **macOS（Apple Silicon arm64）** | CI 矩阵含 `macos-latest`；Tauri dmg 自动构建 |
-| Linux x64 / arm64 | CI 双平台验证 |
-| Node.js | >=22（纯 TypeScript、零原生模块） |
+| **macOS (Apple Silicon arm64)** | CI matrix includes `macos-latest`; Tauri dmg auto-build |
+| Linux x64 / arm64 | CI dual-platform verified |
+| Node.js | >=22 (pure TypeScript, zero native modules) |
 
 ---
 
-## 为什么做 Nexus
+## Why Nexus
 
-2026 年的 coding agent 已经从"能跑 demo"走到"承担真实工作"，但四个结构性问题在规模化时集中爆发：
+In 2026, coding agents have moved from demos to real work, but four structural problems explode at scale:
 
-| 问题 | 现状 | Nexus 的回答 |
+| Problem | Current State | Nexus Answer |
 |---|---|---|
-| **遗忘** | 每个会话结束即清零 | Funes 记忆层 + Trajectory 单向同步 |
-| **失控** | 提示词级治理可被注入绕过 | Omnigent 基础设施级 PDP，模型不可覆盖 |
-| **无据可查** | 缺少完整证据链 | 审计五元组 + 双视角审计引擎 |
-| **锁定** | 押注单一 harness 风险大 | 桥接层防腐蚀：DSH 原生 + 其他协议适配 |
+| **Amnesia** | Each session ends, cross-session knowledge lost | Funes memory layer + Trajectory one-way sync |
+| **Ungovernable** | Prompt-level "governance" bypassed by injection | Omnigent infrastructure-level PDP, model cannot override |
+| **No Audit Trail** | What agent did, who approved, why — missing | Audit quintuple + dual-perspective audit engine |
+| **Lock-in** | Single harness risk | Bridge layer anti-corrosion: DSH native + protocol adapters |
 
-## 总体架构
+Governance enforced at infrastructure level, not suggested by system prompts.
+
+## Architecture
 
 ```mermaid
 flowchart TB
-    UI["接入层<br/>CLI / Web / Desktop / Mobile / API Gateway"]
-    O["编排与控制：Omnigent（PDP 唯一事实源）<br/>Runner 注册表 / 三层策略 / 沙箱编排 / 会话共享 / 成本治理"]
-    B["桥接层：DSH 运行时适配器 + PEP<br/>协议映射 / 权限拦截 / 记忆搬运 / 审计打点"]
-    D["执行层：DeepSeek Harness（Cordis 微内核）<br/>模型适配 / 工具注册表 / 沙箱 / Trajectory"]
-    F["记忆层：Funes<br/>Lance 数据集 / 混合检索 / 脱敏与同步"]
-    X["横切：双视角审计引擎（架构+安全） / 统一证据链"]
+    UI["Access Layer<br/>CLI / Web / Desktop / Mobile / API Gateway"]
+    O["Orchestration: Omnigent (PDP Single Source of Truth)<br/>Runner Registry / 3-Layer Policies / Sandbox Orchestration / Session Sharing / Cost Governance"]
+    B["Bridge: DSH Runtime Adapter + PEP<br/>Protocol Mapping / Permission Interception / Memory Transfer / Audit Instrumentation"]
+    D["Execution: DeepSeek Harness (Cordis Microkernel)<br/>Model Adaptation / Tool Registry / Sandbox / Trajectory"]
+    F["Memory: Funes<br/>Lance Dataset / Hybrid Retrieval / Desensitization & Sync"]
+    X["Cross-cutting: Dual-Perspective Audit Engine / Unified Evidence Chain"]
     UI --> O
     O --> B
     B --> D
-    D -->|"Trajectory 增量（单向）"| F
-    F -.->|"recall 注入 <=2K tokens/轮"| D
+    D -->|"Trajectory Delta (one-way)"| F
+    F -.->|"recall injection <=2K tokens/turn"| D
     X -.- B
     X -.- D
 ```
 
-## 核心设计决策（ADR）
+## Core Design Decisions (ADR)
 
-| 编号 | 决策 | 状态 |
+| ID | Decision | Status |
 |---|---|---|
-| **ADR-01** | 不新设统一控制平面，桥接层 = PEP，PDP 唯一决策源 | 定稿 |
-| **ADR-02** | 双视角审计引擎（架构审计 + AI 安全审计） | 定稿 |
-| **ADR-03** | DSH Cordis 原生插件优先，其他 harness 协议适配 | 定稿 |
+| **ADR-01** | No new unified control plane. Bridge = PEP, PDP is sole decision source | Finalized |
+| **ADR-02** | Dual-perspective audit engine (architectural + AI security audit) | Finalized |
+| **ADR-03** | DSH Cordis native plugin first, other harness protocol adapters | Finalized |
 
-## 仓库结构
+## Repository Structure
 
 ```
 nexus/
 ├── packages/
-│   ├── core/                # @nexus/core         领域模型 / SNE / 审计引擎
-│   ├── bridge/              # @nexus/bridge       PEP 拦截 / 决策缓存 / PauseHandler
-│   ├── memory/              # @nexus/memory       FunesClient / TrajectorySync / 注入预算
-│   ├── adapter-dsh/         # @nexus/adapter-dsh  Cordis 插件骨架
-│   ├── adapter-omnigent/    # @nexus/adapter-omnigent  Omnigent PDP HTTP 适配器
-│   ├── sdk/                 # @nexus/sdk          一键集成层
-│   └── contracts/           # @nexus/contracts    MockPdp（private）
+│   ├── core/                # @nexus/core         Domain model / SNE / Audit engine
+│   ├── bridge/              # @nexus/bridge       PEP interception / Decision cache / PauseHandler
+│   ├── memory/              # @nexus/memory       FunesClient / TrajectorySync / Injection budget
+│   ├── adapter-dsh/         # @nexus/adapter-dsh  Cordis plugin skeleton
+│   ├── adapter-omnigent/    # @nexus/adapter-omnigent  Omnigent PDP HTTP adapter
+│   ├── sdk/                 # @nexus/sdk          One-line integration layer
+│   └── contracts/           # @nexus/contracts    MockPdp (private)
 ├── apps/
-│   └── desktop/             # @nexus/desktop      Tauri v2 桌面壳（macOS dmg）
+│   └── desktop/             # @nexus/desktop      Tauri v2 desktop shell (macOS dmg)
+├── scripts/
+│   └── package-dmg.sh       # macOS DMG packaging script
 ├── docs/
-│   └── DESIGN.md            # 技术设计 v3.1
+│   └── DESIGN.md            # Technical design v3.1
 ├── .github/workflows/
-│   ├── ci.yml               # 双平台 CI（typecheck + lint + test + bench）
-│   ├── release.yml          # tag v* 驱动 npm publish + GitHub Release
-│   └── build-desktop.yml    # macOS ARM64 / x64 dmg 自动构建
-└── AGENTS.md                # 工程约定速查
+│   ├── ci.yml               # Dual-platform CI (typecheck + lint + test + bench)
+│   ├── release.yml          # Tag v* driven npm publish + GitHub Release
+│   └── build-desktop.yml    # macOS ARM64 / x64 dmg auto-build
+└── AGENTS.md                # Engineering conventions
 ```
 
-## 快速开始
+## Quick Start
 
-### 安装
+### Install
 
 ```bash
 git clone git@github.com:OrvilleZhao/Nexus.git
 cd Nexus
-pnpm install                # 需 Node >=22
+pnpm install                # Requires Node >=22
 ```
 
-### 开发命令
+### Development Commands
 
 ```bash
-pnpm typecheck              # 全 workspace TypeScript 类型检查
-pnpm lint                   # ESLint（flat config）
-pnpm test                   # Vitest 全量测试（154 tests）
-pnpm test:coverage          # 覆盖率（lines >=90 / branches >=80）
-pnpm build                  # 各包 tsc 编译到 dist/
-pnpm bench                  # PEP 缓存命中 p99 <20ms 基准
+pnpm typecheck              # Workspace-wide TypeScript type check
+pnpm lint                   # ESLint (flat config)
+pnpm test                   # Vitest full suite (154 tests)
+pnpm test:coverage          # Coverage gate (lines >=90 / branches >=80)
+pnpm build                  # Compile each package to dist/
+pnpm bench                  # PEP cache hit p99 <20ms benchmark
 ```
 
-### 作为库使用
+### Use as Library
 
 ```typescript
 import { createNexusAdapter } from '@nexus/sdk';
@@ -139,56 +143,55 @@ const nexus = createNexusAdapter({
   injectionBudgetTokens: 2000,
 });
 
-// 工具调用前拦截
+// Intercept tool calls before execution
 const result = await nexus.intercept({ tool: 'bash', args: ['ls'] });
 
-// 保存会话轮次
+// Save session turns
 await nexus.saveTurn({ sessionId: 's1', messages: [...] });
 
-// 跨会话检索
-const recall = await nexus.recall({ query: '如何部署', topK: 5 });
+// Cross-session recall
+const recall = await nexus.recall({ query: 'how to deploy', topK: 5 });
 
-// 审计摘要
+// Audit summary
 const audit = await nexus.getAuditSummary({ sessionId: 's1' });
 ```
 
 ## Nexus Desktop
 
-Tauri v2 桌面应用，仿 Codex 布局：
+Tauri v2 desktop app with Codex-style layout:
 
-- 左侧：会话列表管理
-- 中央：AI 对话区
-- 底部：终端面板（Output / Audit 双 tab）
-- 顶部：系统状态栏（Core / PEP / Memory / PDP 实时指示）
+- Left: Session list management
+- Center: AI conversation area
+- Bottom: Terminal panel (Output / Audit dual tab)
+- Top: System status bar (Core / PEP / Memory / PDP real-time indicators)
 
-### CI 自动构建
+### Download & Install dmg
 
-每次 push 到 `main` 自动构建 macOS ARM64 + x64 dmg。推送 `v*` tag 时 dmg 自动挂载到 GitHub Release。
+1. Go to [Actions -> Build Desktop](https://github.com/OrvilleZhao/Nexus/actions/workflows/build-desktop.yml)
+2. Click the latest successful workflow run
+3. In the **Artifacts** section, download the zip for your architecture:
+   - `nexus-desktop-arm64-dmg.zip` — Apple Silicon (M1/M2/M3/M4)
+   - `nexus-desktop-x64-dmg.zip` — Intel Mac
+4. Unzip to get the `.dmg` file, double-click to open
+5. Drag **Nexus Desktop** into **Applications**
+6. First launch: right-click the app -> select **Open** (unsigned apps require manual trust)
 
-### 下载安装 dmg
-
-1. 打开 [Actions → Build Desktop](https://github.com/OrvilleZhao/Nexus/actions/workflows/build-desktop.yml)
-2. 点击最近一次成功的 workflow run
-3. 在 **Artifacts** 区域下载对应架构的 zip：
-   - `nexus-desktop-mac-arm64.zip` — Apple Silicon（M1/M2/M3/M4）
-   - `nexus-desktop-mac-x64.zip` — Intel Mac
-4. 解压得到 `.dmg` 文件，双击打开
-5. 将 **Nexus Desktop** 拖入 **Applications** 文件夹
-6. 首次打开：右键点击应用 → 选择 **打开**（未签名应用需手动信任）
-
-### 本地构建 dmg
+### Build dmg Locally
 
 ```bash
-# 需要 macOS + Rust toolchain
+# Requires macOS + Rust toolchain
 cd apps/desktop
 pnpm install
-pnpm build:frontend         # 编译 TypeScript → JS
-pnpm tauri build            # 输出到 src-tauri/target/release/bundle/dmg/
+pnpm build:frontend         # Compile TypeScript -> JS
+cd src-tauri
+cargo build --release --target aarch64-apple-darwin
+cd ..
+BINARY_DIR=./src-tauri/target/aarch64-apple-darwin/release bash ../../scripts/package-dmg.sh 0.1.0 arm64
 ```
 
-## 测试覆盖
+## Test Coverage
 
-| 包 | 测试数 | 覆盖率 |
+| Package | Tests | Coverage |
 |---|---|---|
 | `@nexus/core` | 59 | 97.6% |
 | `@nexus/bridge` | 41 | 95.1% |
@@ -196,14 +199,14 @@ pnpm tauri build            # 输出到 src-tauri/target/release/bundle/dmg/
 | `@nexus/adapter-omnigent` | 11 | 97.6% |
 | `@nexus/adapter-dsh` | 8 | 100% |
 | `@nexus/sdk` | 7 | 100% |
-| **合计** | **154** | **>95%** |
+| **Total** | **154** | **>95%** |
 
-## 事实基线
+## Upstream Baseline
 
-- **DeepSeek Harness**：MIT，Cordis 微内核，"Everything is a Plugin"，developer preview（存在 breaking changes）
-- **Omnigent**：Apache-2.0，Databricks 开源，meta-harness（Python），contextual policies + 云沙箱
-- **Funes**：Apache-2.0，HF 发布，Rust 单二进制，Lance 数据集，MCP 模式
+- **DeepSeek Harness**: MIT, Cordis microkernel, "Everything is a Plugin", developer preview (breaking changes expected)
+- **Omnigent**: Apache-2.0, Databricks open source, meta-harness (Python), contextual policies + cloud sandbox
+- **Funes**: Apache-2.0, HF release, Rust single binary, Lance dataset, MCP mode
 
-## 许可证
+## License
 
-Apache-2.0（与 Omnigent/Funes 同为宽松协议，DSH MIT 兼容）。
+Apache-2.0
