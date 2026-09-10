@@ -4,31 +4,90 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nexus Desktop</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-           background: #0f0f0f; color: #e0e0e0; padding: 2rem; }
-    h1 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #fff; }
-    .version { color: #888; font-size: 0.85rem; margin-bottom: 1.5rem; }
-    .status { background: #1a1a2e; border: 1px solid #333; border-radius: 8px;
-              padding: 1rem; margin-bottom: 1rem; }
-    .status h2 { font-size: 1rem; margin-bottom: 0.5rem; color: #4ecdc4; }
-    .status p { font-size: 0.85rem; color: #aaa; }
-    .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%;
-           background: #4ecdc4; margin-right: 6px; }
-    .dot.off { background: #ff6b6b; }
-  </style>
+  <link rel="stylesheet" href="css/app.css" />
 </head>
 <body>
-  <h1>Nexus Desktop</h1>
-  <p class="version">v0.1.0 — Nexus AI Agent OS</p>
-  <div class="status">
-    <h2><span class="dot"></span>System Status</h2>
-    <p>Core: loaded | Bridge: active | Memory: ready</p>
+  <div id="root">
+    <div class="app">
+      <!-- Titlebar -->
+      <div class="titlebar" data-tauri-drag-region>
+        <div class="titlebar-dot"></div>
+        <span class="titlebar-title">Nexus Desktop</span>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <h2>Conversations</h2>
+          <button class="btn-new" id="btn-new-session">
+            <span class="icon">+</span>
+            <span>New Session</span>
+          </button>
+        </div>
+        <div class="session-list" id="session-list"></div>
+        <div class="sidebar-footer">
+          <span id="pkg-count">0 packages</span>
+          <span>v0.1.0</span>
+        </div>
+      </div>
+
+      <!-- Main -->
+      <div class="main">
+        <!-- Status Bar -->
+        <div class="status-bar">
+          <div class="status-item">
+            <div class="status-dot green" id="dot-core"></div>
+            <span>Core</span>
+          </div>
+          <div class="status-item">
+            <div class="status-dot green" id="dot-bridge"></div>
+            <span>PEP</span>
+          </div>
+          <div class="status-item">
+            <div class="status-dot green" id="dot-memory"></div>
+            <span>Memory</span>
+          </div>
+          <div class="status-item">
+            <div class="status-dot yellow" id="dot-pdp"></div>
+            <span id="pdp-label">PDP: MockPdp</span>
+          </div>
+          <div class="status-spacer"></div>
+          <div class="status-item">
+            <div class="status-dot purple"></div>
+            <span id="session-label">No session</span>
+          </div>
+        </div>
+
+        <!-- Chat -->
+        <div class="chat-container" id="chat-container">
+          <div class="chat-empty" id="chat-empty">
+            <div class="chat-empty-icon">&#x2728;</div>
+            <h3>Nexus Desktop</h3>
+            <p>Start a new session to begin.</p>
+          </div>
+        </div>
+
+        <!-- Input -->
+        <div class="input-area">
+          <div class="input-wrapper">
+            <textarea id="chat-input" rows="1" placeholder="Send a message..."></textarea>
+            <button class="btn-send" id="btn-send" disabled>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Terminal -->
+        <div class="terminal-panel" id="terminal-panel">
+          <div class="terminal-header">
+            <div class="terminal-tab active" data-tab="output">Output</div>
+            <div class="terminal-tab" data-tab="audit">Audit</div>
+          </div>
+          <div class="terminal-content" id="terminal-output"></div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="status">
-    <h2>Packages</h2>
-    <p>core, bridge, memory, adapter-dsh, adapter-omnigent, sdk</p>
-  </div>
+  <script type="module" src="dist/app.js"></script>
 </body>
 </html>

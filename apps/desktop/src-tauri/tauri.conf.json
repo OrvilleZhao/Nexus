@@ -13,14 +13,18 @@
     "windows": [
       {
         "title": "Nexus Desktop",
-        "width": 800,
-        "height": 600,
+        "width": 1100,
+        "height": 750,
+        "minWidth": 800,
+        "minHeight": 500,
         "resizable": true,
-        "fullscreen": false
+        "decorations": true,
+        "transparent": false,
+        "center": true
       }
     ],
     "security": {
-      "csp": "default-src 'self'; style-src 'self' 'unsafe-inline'"
+      "csp": "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'"
     }
   },
   "bundle": {
