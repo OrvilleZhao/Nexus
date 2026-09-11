@@ -171,7 +171,11 @@ Tauri v2 桌面应用，仿 Codex 布局：
    - `nexus-desktop-x64-dmg.zip` — Intel Mac
 4. 解压得到 `.dmg` 文件，双击打开
 5. 将 **Nexus Desktop** 拖入 **Applications** 文件夹
-6. 首次打开：右键点击应用 -> 选择 **打开**（未签名应用需手动信任）
+6. 移除隔离属性（应用为 ad-hoc 签名、未经 Apple 公证）：
+   ```bash
+   xattr -cr "/Applications/Nexus Desktop.app"
+   ```
+7. 首次打开：右键点击应用 -> 选择 **打开**
 
 ### 本地构建 dmg
 

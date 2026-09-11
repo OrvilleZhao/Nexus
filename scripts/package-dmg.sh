@@ -10,23 +10,41 @@ APP_NAME="Nexus Desktop"
 BUNDLE_ID="ai.nexus.desktop"
 DIST_DIR="./dist/macos"
 STAGE_DIR="$DIST_DIR/stage"
+APP_BUNDLE="$STAGE_DIR/$APP_NAME.app"
 
 echo "=== Packaging $APP_NAME v$VERSION ($ARCH) ==="
 
+# Verify inputs (fail fast with clear message)
+if [ ! -f "$BINARY_DIR/nexus-desktop" ]; then
+  echo "ERROR: binary not found at $BINARY_DIR/nexus-desktop" >&2
+  exit 1
+fi
+if [ ! -d "./dist" ]; then
+  echo "ERROR: frontend dist/ not found — run 'node build.mjs' first" >&2
+  exit 1
+fi
+
 # Clean
 rm -rf "$DIST_DIR"
-mkdir -p "$STAGE_DIR/$APP_NAME.app/Contents/MacOS"
-mkdir -p "$STAGE_DIR/$APP_NAME.app/Contents/Resources"
+mkdir -p "$APP_BUNDLE/Contents/MacOS"
+mkdir -p "$APP_BUNDLE/Contents/Resources"
 
 # Copy binary
-cp "$BINARY_DIR/nexus-desktop" "$STAGE_DIR/$APP_NAME.app/Contents/MacOS/$APP_NAME"
-chmod +x "$STAGE_DIR/$APP_NAME.app/Contents/MacOS/$APP_NAME"
+cp "$BINARY_DIR/nexus-desktop" "$APP_BUNDLE/Contents/MacOS/$APP_NAME"
+chmod +x "$APP_BUNDLE/Contents/MacOS/$APP_NAME"
 
-# Copy frontend assets
-cp -R dist "$STAGE_DIR/$APP_NAME.app/Contents/Resources/web"
+# Copy frontend assets (embedded in binary via custom-protocol; kept for reference)
+cp -R dist "$APP_BUNDLE/Contents/Resources/web"
+
+# Copy app icon (Info.plist references AppIcon)
+if [ -f src-tauri/icons/icon.icns ]; then
+  cp src-tauri/icons/icon.icns "$APP_BUNDLE/Contents/Resources/AppIcon.icns"
+else
+  echo "WARN: icon.icns missing — app will use default icon"
+fi
 
 # Info.plist
-cat > "$STAGE_DIR/$APP_NAME.app/Contents/Info.plist" << PLIST
+cat > "$APP_BUNDLE/Contents/Info.plist" << PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -58,18 +76,28 @@ cat > "$STAGE_DIR/$APP_NAME.app/Contents/Info.plist" << PLIST
 PLIST
 
 # PkgInfo
-echo -n "APPL????" > "$STAGE_DIR/$APP_NAME.app/Contents/PkgInfo"
+echo -n "APPL????" > "$APP_BUNDLE/Contents/PkgInfo"
 
 # Symlink for Applications
 ln -s /Applications "$STAGE_DIR/Applications"
 
+# Ad-hoc code sign (required to avoid "damaged app" Gatekeeper errors;
+# a real Developer ID signature + notarization replaces this when secrets exist)
+if command -v codesign >/dev/null 2>&1; then
+  echo "=== Ad-hoc code signing ==="
+  codesign --force --sign - "$APP_BUNDLE"
+  codesign --verify "$APP_BUNDLE"
+else
+  echo "WARN: codesign not available — app will trigger Gatekeeper 'damaged' errors"
+fi
+
 # Verify
 echo "=== Verifying bundle ==="
-test -f "$STAGE_DIR/$APP_NAME.app/Contents/Info.plist"
-test -f "$STAGE_DIR/$APP_NAME.app/Contents/PkgInfo"
-test -x "$STAGE_DIR/$APP_NAME.app/Contents/MacOS/$APP_NAME"
+test -f "$APP_BUNDLE/Contents/Info.plist"
+test -f "$APP_BUNDLE/Contents/PkgInfo"
+test -x "$APP_BUNDLE/Contents/MacOS/$APP_NAME"
 test -L "$STAGE_DIR/Applications"
-plutil -lint "$STAGE_DIR/$APP_NAME.app/Contents/Info.plist"
+plutil -lint "$APP_BUNDLE/Contents/Info.plist"
 
 # Create DMG
 echo "=== Creating DMG ==="
@@ -79,6 +107,10 @@ hdiutil create \
   -ov \
   -format UDZO \
   "$DIST_DIR/${APP_NAME}-${VERSION}-${ARCH}.dmg"
+
+# Verify DMG integrity
+echo "=== Verifying DMG ==="
+hdiutil verify "$DIST_DIR/${APP_NAME}-${VERSION}-${ARCH}.dmg"
 
 echo "=== Done ==="
 ls -la "$DIST_DIR"/*.dmg

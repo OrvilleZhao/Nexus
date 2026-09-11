@@ -174,7 +174,11 @@ Tauri v2 desktop app with Codex-style layout:
    - `nexus-desktop-x64-dmg.zip` — Intel Mac
 4. Unzip to get the `.dmg` file, double-click to open
 5. Drag **Nexus Desktop** into **Applications**
-6. First launch: right-click the app -> select **Open** (unsigned apps require manual trust)
+6. Remove the quarantine attribute (app is ad-hoc signed, not notarized):
+   ```bash
+   xattr -cr "/Applications/Nexus Desktop.app"
+   ```
+7. First launch: right-click the app -> select **Open**
 
 ### Build dmg Locally
 
