@@ -9,82 +9,67 @@
 <body>
   <div id="root">
     <div class="app">
-      <!-- Titlebar -->
       <div class="titlebar" data-tauri-drag-region>
         <div class="titlebar-dot"></div>
         <span class="titlebar-title">Nexus Desktop</span>
       </div>
 
-      <!-- Sidebar -->
-      <div class="sidebar">
+      <aside class="sidebar">
         <div class="sidebar-header">
-          <h2>Conversations</h2>
           <button class="btn-new" id="btn-new-session">
             <span class="icon">+</span>
-            <span>New Session</span>
+            <span>New Chat</span>
           </button>
         </div>
+        <nav class="nav">
+          <button class="nav-item active" data-view="chat">Chats</button>
+          <button class="nav-item" data-view="agents">Agents</button>
+          <button class="nav-item" data-view="plugins">Plugins</button>
+          <button class="nav-item" data-view="settings">Providers</button>
+        </nav>
         <div class="session-list" id="session-list"></div>
         <div class="sidebar-footer">
-          <span id="pkg-count">0 packages</span>
+          <span id="foot-left">0 chats</span>
           <span>v0.1.0</span>
         </div>
-      </div>
+      </aside>
 
-      <!-- Main -->
       <div class="main">
-        <!-- Status Bar -->
         <div class="status-bar">
-          <div class="status-item">
-            <div class="status-dot green" id="dot-core"></div>
-            <span>Core</span>
-          </div>
-          <div class="status-item">
-            <div class="status-dot green" id="dot-bridge"></div>
-            <span>PEP</span>
-          </div>
-          <div class="status-item">
-            <div class="status-dot green" id="dot-memory"></div>
-            <span>Memory</span>
-          </div>
-          <div class="status-item">
-            <div class="status-dot yellow" id="dot-pdp"></div>
-            <span id="pdp-label">PDP: MockPdp</span>
-          </div>
+          <div class="status-item"><div class="status-dot green"></div><span>Core</span></div>
+          <div class="status-item"><div class="status-dot green"></div><span>PEP</span></div>
+          <div class="status-item"><div class="status-dot green"></div><span>Memory</span></div>
+          <div class="status-item"><div class="status-dot yellow"></div><span>PDP: Mock</span></div>
           <div class="status-spacer"></div>
-          <div class="status-item">
-            <div class="status-dot purple"></div>
-            <span id="session-label">No session</span>
-          </div>
+          <div class="status-item"><div class="status-dot purple"></div><span id="status-model">No provider</span></div>
         </div>
 
-        <!-- Chat -->
-        <div class="chat-container" id="chat-container">
-          <div class="chat-empty" id="chat-empty">
-            <div class="chat-empty-icon">&#x2728;</div>
-            <h3>Nexus Desktop</h3>
-            <p>Start a new session to begin.</p>
+        <section id="view-chat" class="view">
+          <div class="chat-container" id="chat-container"></div>
+          <div class="input-area">
+            <div class="input-meta">
+              <label class="input-meta-label" for="agent-select">Agent</label>
+              <select id="agent-select" class="select"></select>
+            </div>
+            <div class="input-wrapper">
+              <textarea id="chat-input" rows="1" placeholder="Send a message…"></textarea>
+              <button class="btn-send" id="btn-send" disabled>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              </button>
+            </div>
           </div>
-        </div>
+          <div class="terminal-panel" id="terminal-panel">
+            <div class="terminal-header">
+              <div class="terminal-tab active" data-tab="output">Output</div>
+              <div class="terminal-tab" data-tab="audit">Audit</div>
+            </div>
+            <div class="terminal-content" id="terminal-output"></div>
+          </div>
+        </section>
 
-        <!-- Input -->
-        <div class="input-area">
-          <div class="input-wrapper">
-            <textarea id="chat-input" rows="1" placeholder="Send a message..."></textarea>
-            <button class="btn-send" id="btn-send" disabled>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- Terminal -->
-        <div class="terminal-panel" id="terminal-panel">
-          <div class="terminal-header">
-            <div class="terminal-tab active" data-tab="output">Output</div>
-            <div class="terminal-tab" data-tab="audit">Audit</div>
-          </div>
-          <div class="terminal-content" id="terminal-output"></div>
-        </div>
+        <section id="view-agents" class="view hidden"></section>
+        <section id="view-plugins" class="view hidden"></section>
+        <section id="view-settings" class="view hidden"></section>
       </div>
     </div>
   </div>

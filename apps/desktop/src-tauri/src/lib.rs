@@ -6,8 +6,8 @@ pub fn run() {
         .plugin(tauri_plugin_shell::init())
         .invoke_handler(tauri::generate_handler![
             commands::get_status,
-            commands::send_message,
-            commands::get_audit_summary,
+            commands::chat_completion,
+            commands::test_provider,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

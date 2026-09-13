@@ -1,23 +1,17 @@
-export interface Session {
-  id: string;
-  title: string;
-  createdAt: number;
-  messages: Message[];
-}
-
 export interface Message {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
-  timestamp: number;
+  id: string
+  role: 'user' | 'assistant'
+  content: string
+  timestamp: number
+  isError?: boolean
 }
 
-export interface AuditEntry {
-  ts: string;
-  perspective: string;
-  query: string;
-  decision: string;
-  reason: string;
+export interface Session {
+  id: string
+  title: string
+  createdAt: number
+  agentId?: string
+  messages: Message[]
 }
 
-export type TerminalTab = 'output' | 'audit';
+export type TerminalTab = 'output' | 'audit'
